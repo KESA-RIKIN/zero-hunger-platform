@@ -16,9 +16,10 @@ const DashboardHome = () => {
             if (!currentUser) return;
             try {
                 const token = await currentUser.getIdToken();
+                const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
                 // Fetch donations
-                const donationsRes = await fetch('http://localhost:5000/api/donations/my-donations', {
+                const donationsRes = await fetch(`${API_URL}/api/donations/my-donations`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (donationsRes.ok) {
@@ -27,7 +28,7 @@ const DashboardHome = () => {
                 }
 
                 // Fetch requests
-                const requestsRes = await fetch('http://localhost:5000/api/donations/my-requests', {
+                const requestsRes = await fetch(`${API_URL}/api/donations/my-requests`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 if (requestsRes.ok) {
