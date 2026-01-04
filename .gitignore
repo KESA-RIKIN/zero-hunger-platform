@@ -1,0 +1,3 @@
+backend/config/serviceAccountKey.json
+frontend/.env
+frontend/.env.example
