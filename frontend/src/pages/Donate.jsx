@@ -75,6 +75,12 @@ const Donate = () => {
         e.preventDefault();
         setLoading(true);
 
+        if (!currentUser) {
+            alert("Please login to donate.");
+            setLoading(false);
+            return;
+        }
+
         try {
             const token = await currentUser.getIdToken();
             const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
