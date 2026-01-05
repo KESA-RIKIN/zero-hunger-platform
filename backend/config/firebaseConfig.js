@@ -8,4 +8,10 @@ if (!admin.apps.length) {
   });
 }
 
-module.exports = admin;
+// Initialize Firestore
+const db = admin.firestore();
+
+module.exports = {
+  admin,
+  db,
+};

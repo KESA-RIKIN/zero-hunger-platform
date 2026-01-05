@@ -23,53 +23,7 @@ const Donate = () => {
         setFormData({ ...formData, [e.target.id]: e.target.value });
     };
 
-    const handleLocationClick = () => {
-        if (navigator.geolocation) {
-            setLoading(true);
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
 
-                    try {
-                        // Reverse geocoding using Nominatim
-                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`, {
-                            headers: {
-                                'User-Agent': 'ZeroHungerPlatform/1.0'
-                            }
-                        });
-                        const data = await response.json();
-                        const address = data.display_name || "Current Location (Auto-detected)";
-
-                        setFormData({
-                            ...formData,
-                            latitude: lat,
-                            longitude: lon,
-                            location: address
-                        });
-                    } catch (error) {
-                        console.error("Error reverse geocoding: ", error);
-                        setFormData({
-                            ...formData,
-                            latitude: lat,
-                            longitude: lon,
-                            location: "Current Location (Auto-detected)"
-                        });
-                    } finally {
-                        setLoading(false);
-                    }
-                },
-                (error) => {
-                    console.error("Error getting location: ", error);
-                    alert("Unable to retrieve location. Please enter address manually.");
-                    setLoading(false);
-                },
-                { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
-            );
-        } else {
-            alert("Geolocation is not supported by this browser.");
-        }
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -231,10 +185,7 @@ const Donate = () => {
                                         <span className="material-symbols-outlined text-text-light text-[20px]">location_on</span>
                                     </div>
                                 </div>
-                                <button type="button" onClick={handleLocationClick} className="flex items-center justify-center h-11 px-4 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 font-bold text-sm transition-colors whitespace-nowrap" title="Use Current Location">
-                                    <span className="material-symbols-outlined text-xl mr-1">my_location</span>
-                                    Auto
-                                </button>
+
                             </div>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
