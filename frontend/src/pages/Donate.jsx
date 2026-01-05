@@ -38,6 +38,25 @@ const Donate = () => {
         try {
             const token = await currentUser.getIdToken();
             const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
+            // Geocode the address on the frontend
+            let lat = null;
+            let lon = null;
+            try {
+                const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(formData.location)}`, {
+                    headers: {
+                        'User-Agent': 'ZeroHungerPlatform/1.0'
+                    }
+                });
+                const geoData = await geoResponse.json();
+                if (geoData && geoData.length > 0) {
+                    lat = parseFloat(geoData[0].lat);
+                    lon = parseFloat(geoData[0].lon);
+                }
+            } catch (error) {
+                console.warn("Frontend geocoding failed, falling back to backend's best effort", error);
+            }
+
             const response = await fetch(`${API_URL}/api/donations`, {
                 method: 'POST',
                 headers: {
@@ -51,8 +70,8 @@ const Donate = () => {
                     location: formData.location,
                     quantity: formData.quantity,
                     time: formData.time,
-                    latitude: formData.latitude,
-                    longitude: formData.longitude,
+                    latitude: lat,
+                    longitude: lon,
                     food_image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80'
                 }),
             });
