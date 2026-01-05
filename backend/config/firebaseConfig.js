@@ -1,15 +1,17 @@
-const admin = require('firebase-admin');
-const serviceAccount = require('./serviceAccountKey.json');
+const admin = require("firebase-admin");
 
-try {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
-  console.log('Firebase Admin Initialized Successfully');
-} catch (error) {
-  console.error('Firebase Admin Initialization Error:', error);
+if (!process.env.FIREBASE_SERVICE_ACCOUNT) {
+  throw new Error("FIREBASE_SERVICE_ACCOUNT is not set");
 }
 
-const db = admin.firestore();
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT
+);
 
-module.exports = { admin, db };
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
+
+console.log("🔥 Firebase initialized successfully");
+
+module.exports = admin;
