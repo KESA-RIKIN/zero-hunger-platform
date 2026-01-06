@@ -38,6 +38,7 @@ const Donate = () => {
         try {
             const token = await currentUser.getIdToken();
             const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+            console.log("🚀 DEBUG: Submitting to:", `${API_URL}/api/donations`);
 
             // Geocode the address on the frontend
             let lat = null;

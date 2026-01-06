@@ -1,8 +1,9 @@
 const admin = require("firebase-admin");
 
-if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+const serviceAccount = require("./serviceAccountKey.json");
+console.log("🔥 Loaded Service Account for Project:", serviceAccount.project_id);
 
+if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
   });
